@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=1080, height=1440">
+    <title>小红书封面 - 粉笔风</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Long+Cang&family=Noto+Sans+SC:wght@300;400;500;700;900&display=swap');
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Noto Sans SC', sans-serif;
+            width: 1080px; height: 1440px; overflow: hidden;
+        }
+        .cover {
+            width: 1080px; height: 1440px;
+            background: #FFFFFF;
+            font-family: 'Noto Sans SC', sans-serif;
+            display: flex; flex-direction: column;
+            position: relative; overflow: hidden;
+        }
+        .cover .top-accent { height: 4px; background: #C80059; flex-shrink: 0; }
+        .cover .top-meta {
+            padding: 58px 96px 0;
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        .cover .series {
+            font-size: 21px; letter-spacing: 0.20em; color: #C80059;
+            font-weight: 500; text-transform: uppercase;
+        }
+        .cover .issue { font-size: 21px; color: #AEA49A; letter-spacing: 0.08em; }
+        .cover .hero-num {
+            padding: 52px 96px 0;
+            flex: 1;
+            display: flex; flex-direction: column; justify-content: center;
+        }
+        .cover .num-label {
+            font-size: 24px; color: #9A8E86; letter-spacing: 0.08em; margin-bottom: 12px;
+        }
+        .cover .big-num {
+            font-family: 'Long Cang', cursive;
+            font-size: 224px; font-weight: 700; line-height: 0.88;
+            color: #C80059; letter-spacing: -0.02em;
+        }
+        .cover .num-unit {
+            font-family: 'Long Cang', cursive;
+            font-size: 72px; font-weight: 600; color: #DCCFD2; line-height: 1.2; margin-top: 10px;
+        }
+        .cover .title-block { padding: 0 96px 60px; }
+        .cover .divline { width: 40px; height: 2px; background: #C80059; margin-bottom: 38px; }
+        .cover h1 {
+            font-family: 'Long Cang', cursive;
+            font-size: 78px; font-weight: 700; color: #1A1612; line-height: 1.28;
+            margin-bottom: 26px;
+        }
+        .cover .sub { font-size: 30px; color: #7A6A62; line-height: 1.9; font-weight: 300; }
+        .cover .footer {
+            padding: 38px 96px;
+            border-top: 1px solid #E8E2DC;
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        .cover .auth-name { font-size: 26px; font-weight: 600; color: #1A1612; }
+        .cover .auth-tag  { font-size: 20px; color: #9A8A82; margin-top: 6px; }
+        .cover .footer-arrow { font-size: 32px; color: #C80059; }
+    </style>
+</head>
+<body>
+    <div class="cover">
+        <div class="top-accent"></div>
+        <div class="top-meta">
+            <span class="series">{{SERIES}}</span>
+            <span class="issue">{{ISSUE}}</span>
+        </div>
+        <div class="hero-num">
+            <div class="num-label">{{STAT_LABEL}}</div>
+            <div class="big-num">{{STAT_NUMBER}}</div>
+            <div class="num-unit">{{STAT_UNIT}}</div>
+        </div>
+        <div class="title-block">
+            <div class="divline"></div>
+            <h1>{{TITLE}}</h1>
+            <p class="sub">{{SUBTITLE}}</p>
+        </div>
+        <div class="footer">
+            <div>
+                <div class="auth-name">{{AUTHOR}}</div>
+                <div class="auth-tag">{{AUTHOR_TAG}}</div>
+            </div>
+            <div class="footer-arrow">&#8594;</div>
+        </div>
+    </div>
+</body>
+</html>

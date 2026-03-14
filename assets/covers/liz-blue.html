@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=1080, height=1440">
+    <title>小红书封面 - Liz 经典蓝</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Noto+Sans+SC:wght@300;400;500;700&display=swap');
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Nunito', 'Noto Sans SC', sans-serif;
+            width: 1080px; height: 1440px; overflow: hidden;
+        }
+        .cover {
+            width: 1080px; height: 1440px;
+            background: #BAD2E2;
+            font-family: 'Nunito', 'Noto Sans SC', sans-serif;
+            display: flex; flex-direction: column;
+            color: #1C1C38;
+        }
+        .cover .top-area {
+            padding: 72px 88px 0;
+            display: flex; justify-content: space-between; align-items: center;
+            margin-bottom: 60px;
+        }
+        .cover .pill {
+            background: #1C1C38; border-radius: 100px;
+            padding: 20px 48px;
+            display: inline-flex; align-items: center;
+        }
+        .cover .pill-text {
+            font-size: 26px; font-weight: 900; color: #FFFFFF;
+            letter-spacing: 0.16em; text-transform: uppercase;
+        }
+        .cover .issue-num {
+            font-size: 26px; font-weight: 800; color: rgba(28,28,56,0.4);
+            letter-spacing: 0.08em;
+        }
+        .cover .hero-wrap { margin: 0 88px 52px; }
+        .cover .stat-label {
+            font-size: 28px; font-weight: 700; color: rgba(28,28,56,0.52);
+            letter-spacing: 0.12em; text-transform: uppercase;
+            margin-bottom: 20px; text-align: center;
+        }
+        .cover .stat-panel {
+            background: #9696CA; border-radius: 28px;
+            padding: 52px 52px 44px;
+            display: flex; flex-direction: column; align-items: center;
+        }
+        .cover .big-num {
+            font-size: 196px; font-weight: 900; line-height: 0.9;
+            color: #FFFFFF; letter-spacing: -0.04em;
+        }
+        .cover .num-unit {
+            font-family: 'Noto Sans SC', sans-serif;
+            font-size: 68px; font-weight: 700; color: rgba(255,255,255,0.58);
+            margin-top: 4px;
+        }
+        .cover .figure-row { margin-top: 28px; width: 100%; }
+        .cover .title-area {
+            padding: 0 88px;
+            flex: 1; display: flex; flex-direction: column; justify-content: center;
+        }
+        .cover h1 {
+            font-family: 'Noto Sans SC', sans-serif;
+            font-size: 64px; font-weight: 700; line-height: 1.35;
+            color: #1C1C38; margin-bottom: 24px;
+        }
+        .cover .sub {
+            font-size: 30px; font-weight: 700; color: rgba(28,28,56,0.48);
+            letter-spacing: 0.06em; text-transform: uppercase;
+        }
+        .cover .footer {
+            padding: 40px 88px;
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        .cover .sig {
+            font-size: 32px; font-weight: 800; color: rgba(28,28,56,0.42);
+            letter-spacing: 0.10em; text-transform: uppercase;
+        }
+        .cover .sig-tag {
+            font-size: 22px; font-weight: 600; color: rgba(28,28,56,0.32);
+            letter-spacing: 0.08em; margin-top: 6px;
+        }
+    </style>
+</head>
+<body>
+    <div class="cover">
+        <div class="top-area">
+            <div class="pill"><span class="pill-text">{{SERIES}}</span></div>
+            <span class="issue-num">{{ISSUE}}</span>
+        </div>
+
+        <div class="hero-wrap">
+            <div class="stat-label">{{STAT_LABEL}}</div>
+            <div class="stat-panel">
+                <div class="big-num">{{STAT_NUMBER}}</div>
+                <div class="num-unit">{{STAT_UNIT}}</div>
+                <div class="figure-row">
+                    <svg width="100%" height="120" viewBox="0 0 800 120" fill="none">
+                        <ellipse cx="86" cy="26" rx="24" ry="26" fill="rgba(255,255,255,0.82)"/>
+                        <rect x="64" y="54" width="46" height="36" rx="8" fill="rgba(255,255,255,0.82)"/>
+                        <line x1="64" y1="64" x2="36" y2="84" stroke="rgba(255,255,255,0.82)" stroke-width="7" stroke-linecap="round"/>
+                        <line x1="110" y1="62" x2="146" y2="52" stroke="rgba(255,255,255,0.82)" stroke-width="7" stroke-linecap="round"/>
+                        <line x1="74" y1="90" x2="64" y2="112" stroke="rgba(255,255,255,0.82)" stroke-width="7" stroke-linecap="round"/>
+                        <line x1="100" y1="90" x2="110" y2="112" stroke="rgba(255,255,255,0.82)" stroke-width="7" stroke-linecap="round"/>
+                        <rect x="148" y="44" width="60" height="42" rx="6" fill="rgba(255,255,255,0.55)"/>
+                        <rect x="138" y="86" width="80" height="8" rx="4" fill="rgba(255,255,255,0.4)"/>
+                        <line x1="248" y1="64" x2="328" y2="64" stroke="rgba(255,255,255,0.65)" stroke-width="6" stroke-linecap="round"/>
+                        <polyline points="310,50 330,64 310,78" stroke="rgba(255,255,255,0.65)" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+                        <polyline points="360,106 400,106 400,84 440,84 440,62 480,62 480,40 522,40" stroke="rgba(255,255,255,0.62)" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+                        <circle cx="400" cy="106" r="5" fill="rgba(255,255,255,0.55)"/>
+                        <circle cx="440" cy="84" r="5" fill="rgba(255,255,255,0.55)"/>
+                        <circle cx="480" cy="62" r="5" fill="rgba(255,255,255,0.55)"/>
+                        <circle cx="522" cy="40" r="16" fill="rgba(255,255,255,0.2)"/>
+                        <circle cx="522" cy="40" r="11" fill="white"/>
+                        <text x="522" y="46" text-anchor="middle" font-family="Nunito" font-size="13" font-weight="900" fill="#9696CA">&#9733;</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <div class="title-area">
+            <h1>{{TITLE}}</h1>
+            <div class="sub">{{SUBTITLE}}</div>
+        </div>
+
+        <div class="footer">
+            <div>
+                <div class="sig">{{AUTHOR}}</div>
+                <div class="sig-tag">{{AUTHOR_TAG}}</div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

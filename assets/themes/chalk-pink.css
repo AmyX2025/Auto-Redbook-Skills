@@ -1,0 +1,133 @@
+/* 粉笔风 (Chalk Pink) — Amy 自定义主题 */
+@import url('https://fonts.googleapis.com/css2?family=Long+Cang&family=Noto+Sans+SC:wght@300;400;500;700;900&display=swap');
+
+.card-container {
+    background: #FFFFFF !important;
+    padding: 0 !important;
+}
+
+.card-inner {
+    background: #FFFFFF !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    backdrop-filter: none !important;
+    padding: 88px !important;
+    min-height: 1440px !important;
+    border-top: 4px solid #C80059;
+    position: relative;
+}
+
+.card-content {
+    color: #5C4C44 !important;
+    font-size: 35px !important;
+    line-height: 1.9 !important;
+    font-weight: 300 !important;
+    font-family: 'Noto Sans SC', sans-serif !important;
+}
+
+.card-content h1 {
+    font-family: 'Long Cang', cursive !important;
+    font-size: 58px !important;
+    font-weight: 700 !important;
+    color: #1A1612 !important;
+    line-height: 1.3 !important;
+    margin-bottom: 34px !important;
+}
+
+.card-content h2 {
+    font-family: 'Long Cang', cursive !important;
+    font-size: 50px !important;
+    font-weight: 700 !important;
+    color: #1A1612 !important;
+    line-height: 1.32 !important;
+    margin: 44px 0 24px 0 !important;
+}
+
+.card-content h3 {
+    font-family: 'Long Cang', cursive !important;
+    font-size: 44px !important;
+    font-weight: 700 !important;
+    color: #1A1612 !important;
+    margin: 36px 0 16px 0 !important;
+}
+
+.card-content p {
+    margin-bottom: 32px !important;
+}
+
+.card-content strong {
+    font-weight: 700 !important;
+    color: #1A1612 !important;
+}
+
+.card-content em {
+    font-style: italic !important;
+    color: #C80059 !important;
+}
+
+.card-content a {
+    color: #C80059 !important;
+    border-bottom: 2px solid #C80059 !important;
+}
+
+.card-content ul,
+.card-content ol {
+    margin: 24px 0 !important;
+    padding-left: 52px !important;
+}
+
+.card-content li {
+    margin-bottom: 18px !important;
+    line-height: 1.85 !important;
+}
+
+.card-content blockquote {
+    border-left: 5px solid #C80059 !important;
+    padding: 40px 52px !important;
+    background: #FEF0F5 !important;
+    margin: 36px 0 !important;
+    color: #1A1612 !important;
+    font-style: normal !important;
+    border-radius: 0 !important;
+}
+
+.card-content blockquote p {
+    font-family: 'Long Cang', cursive !important;
+    font-size: 44px !important;
+    font-weight: 600 !important;
+    line-height: 1.72 !important;
+    margin: 0 !important;
+}
+
+.card-content code {
+    background: #FEF0F5 !important;
+    color: #C80059 !important;
+    font-size: 32px !important;
+}
+
+.card-content pre {
+    background: #1A1612 !important;
+    color: #FEF0F5 !important;
+    border-radius: 12px !important;
+    padding: 36px !important;
+}
+
+.card-content hr {
+    background: #E0DAD4 !important;
+    margin: 40px 0 !important;
+}
+
+.tags-container {
+    border-top: 1px solid #E0DAD4 !important;
+}
+
+.tag {
+    background: #C80059 !important;
+}
+
+.page-number {
+    color: #AEA49A !important;
+    bottom: 34px !important;
+    right: 88px !important;
+    font-size: 22px !important;
+}

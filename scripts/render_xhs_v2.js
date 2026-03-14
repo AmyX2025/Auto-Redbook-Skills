@@ -76,6 +76,27 @@ const STYLES = {
         card_bg: "linear-gradient(135deg, #1a1a2e 0%, #16213e 100%)",
         accent_color: "#e94560",
     },
+    'warm-orange': {
+        name: "暖橘风",
+        cover_bg: "#FAFAF4",
+        card_bg: "#FAFAF4",
+        accent_color: "#D4602A",
+        custom_cover: true,
+    },
+    'chalk-pink': {
+        name: "粉笔风",
+        cover_bg: "#FFFFFF",
+        card_bg: "#FFFFFF",
+        accent_color: "#C80059",
+        custom_cover: true,
+    },
+    'liz-blue': {
+        name: "Liz 经典蓝",
+        cover_bg: "#BAD2E2",
+        card_bg: "#BAD2E2",
+        accent_color: "#9696CA",
+        custom_cover: true,
+    },
 };
 
 /**
@@ -259,25 +280,61 @@ function convertMarkdownToHtml(mdContent, style = STYLES.purple) {
 }
 
 /**
+ * 加载自定义封面模板
+ */
+function loadCustomCoverTemplate(styleKey, metadata) {
+    const coverPath = path.join(ASSETS_DIR, 'covers', `${styleKey}.html`);
+    if (!fs.existsSync(coverPath)) return null;
+
+    let html = fs.readFileSync(coverPath, 'utf-8');
+
+    // 替换所有占位符
+    const replacements = {
+        '{{TITLE}}': metadata.title || '标题',
+        '{{SUBTITLE}}': metadata.subtitle || '',
+        '{{EMOJI}}': metadata.emoji || '📝',
+        '{{SERIES}}': metadata.series || 'AI × 职场',
+        '{{ISSUE}}': metadata.issue || 'NO.01',
+        '{{STAT_NUMBER}}': metadata.stat_number || '',
+        '{{STAT_UNIT}}': metadata.stat_unit || '',
+        '{{STAT_LABEL}}': metadata.stat_label || '',
+        '{{AUTHOR}}': metadata.author || 'Amy',
+        '{{AUTHOR_TAG}}': metadata.author_tag || 'AI 应用 · 每周更新',
+    };
+
+    for (const [placeholder, value] of Object.entries(replacements)) {
+        html = html.replace(new RegExp(placeholder.replace(/[{}]/g, '\\$&'), 'g'), value);
+    }
+
+    return html;
+}
+
+/**
  * 生成封面 HTML
  */
 function generateCoverHtml(metadata, styleKey = 'purple') {
     const style = STYLES[styleKey] || STYLES.purple;
-    
+
+    // 尝试加载自定义封面模板
+    if (style.custom_cover) {
+        const customHtml = loadCustomCoverTemplate(styleKey, metadata);
+        if (customHtml) return customHtml;
+    }
+
     const emoji = metadata.emoji || '📝';
     let title = metadata.title || '标题';
     let subtitle = metadata.subtitle || '';
-    
+
     if (title.length > 15) title = title.slice(0, 15);
     if (subtitle.length > 15) subtitle = subtitle.slice(0, 15);
-    
+
     const isDark = styleKey === 'dark';
     const textColor = isDark ? '#ffffff' : '#000000';
-    const titleGradient = isDark 
-        ? 'linear-gradient(180deg, #ffffff 0%, #cccccc 100%)' 
+    const titleGradient = isDark
+        ? 'linear-gradient(180deg, #ffffff 0%, #cccccc 100%)'
         : 'linear-gradient(180deg, #2E67B1 0%, #4C4C4C 100%)';
     const innerBg = isDark ? '#1a1a2e' : '#F3F3F3';
-    
+
     return `<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
@@ -335,12 +392,26 @@ function generateCoverHtml(metadata, styleKey = 'purple') {
 }
 
 /**
+ * 加载主题 CSS 文件
+ */
+function loadThemeCss(styleKey) {
+    const themePath = path.join(ASSETS_DIR, 'themes', `${styleKey}.css`);
+    if (fs.existsSync(themePath)) {
+        return fs.readFileSync(themePath, 'utf-8');
+    }
+    return '';
+}
+
+/**
  * 生成正文卡片 HTML
  */
 function generateCardHtml(content, pageNumber = 1, totalPages = 1, styleKey = 'purple') {
     const style = STYLES[styleKey] || STYLES.purple;
     const htmlContent = convertMarkdownToHtml(content, style);
     const pageText = totalPages > 1 ? `${pageNumber}/${totalPages}` : '';
+
+    // 如果有自定义主题 CSS，加载并注入
+    const themeCss = style.custom_cover ? loadThemeCss(styleKey) : '';
     
     const isDark = styleKey === 'dark';
     const cardBg = isDark ? 'rgba(30, 30, 46, 0.95)' : 'rgba(255, 255, 255, 0.95)';
@@ -471,6 +542,7 @@ function generateCardHtml(content, pageNumber = 1, totalPages = 1, styleKey = 'p
             color: rgba(255, 255, 255, 0.8);
             font-weight: 500;
         }
+        ${themeCss ? `/* Theme Override */\n${themeCss}` : ''}
     </style>
 </head>
 <body>
@@ -598,7 +670,8 @@ async function renderMarkdownToCards(mdFile, outputDir, styleKey = 'purple') {
     const totalCards = processedCards.length;
     console.log(`  📄 将生成 ${totalCards} 张卡片`);
     
-    if (metadata.emoji || metadata.title) {
+    const style = STYLES[styleKey] || STYLES.purple;
+    if (metadata.emoji || metadata.title || style.custom_cover) {
         console.log('  📷 生成封面...');
         const coverHtml = generateCoverHtml(metadata, styleKey);
         
@@ -662,7 +735,8 @@ function parseArgs() {
   --help                  显示帮助信息
 
 可用样式:
-  purple, xiaohongshu, mint, sunset, ocean, elegant, dark
+  purple, xiaohongshu, mint, sunset, ocean, elegant, dark,
+  warm-orange, chalk-pink, liz-blue
 
 示例:
   node render_xhs_v2.js note.md

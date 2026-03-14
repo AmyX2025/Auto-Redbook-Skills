@@ -1,0 +1,141 @@
+/* Liz 经典蓝 (Liz Classic Blue) — Amy 自定义主题 */
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Noto+Sans+SC:wght@300;400;500;700&display=swap');
+
+.card-container {
+    background: #BAD2E2 !important;
+    padding: 0 !important;
+}
+
+.card-inner {
+    background: #BAD2E2 !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    backdrop-filter: none !important;
+    padding: 60px 88px 88px !important;
+    min-height: 1440px !important;
+    position: relative;
+}
+
+.card-content {
+    color: #1C1C38 !important;
+    font-size: 34px !important;
+    line-height: 1.9 !important;
+    font-weight: 400 !important;
+    font-family: 'Noto Sans SC', sans-serif !important;
+}
+
+.card-content h1 {
+    font-family: 'Noto Sans SC', sans-serif !important;
+    font-size: 54px !important;
+    font-weight: 700 !important;
+    color: #1C1C38 !important;
+    line-height: 1.3 !important;
+    margin-bottom: 40px !important;
+}
+
+.card-content h2 {
+    font-family: 'Noto Sans SC', sans-serif !important;
+    font-size: 46px !important;
+    font-weight: 700 !important;
+    color: #1C1C38 !important;
+    line-height: 1.35 !important;
+    margin: 40px 0 24px 0 !important;
+}
+
+.card-content h3 {
+    font-family: 'Nunito', sans-serif !important;
+    font-size: 38px !important;
+    font-weight: 800 !important;
+    color: #1C1C38 !important;
+    letter-spacing: 0.04em !important;
+    margin: 32px 0 16px 0 !important;
+}
+
+.card-content p {
+    margin-bottom: 28px !important;
+}
+
+.card-content strong {
+    font-weight: 700 !important;
+    color: #1C1C38 !important;
+}
+
+.card-content em {
+    font-style: italic !important;
+    color: #9696CA !important;
+}
+
+.card-content a {
+    color: #1C1C38 !important;
+    border-bottom: 2px solid #9696CA !important;
+}
+
+.card-content ul,
+.card-content ol {
+    margin: 24px 0 !important;
+    padding-left: 52px !important;
+}
+
+.card-content li {
+    margin-bottom: 16px !important;
+    line-height: 1.75 !important;
+}
+
+.card-content blockquote {
+    border-left: none !important;
+    padding: 40px 48px !important;
+    background: #9696CA !important;
+    margin: 32px 0 !important;
+    color: #FFFFFF !important;
+    font-style: normal !important;
+    border-radius: 24px !important;
+}
+
+.card-content blockquote p {
+    font-family: 'Noto Sans SC', sans-serif !important;
+    font-size: 32px !important;
+    font-weight: 700 !important;
+    line-height: 1.75 !important;
+    color: #FFFFFF !important;
+    margin: 0 !important;
+}
+
+.card-content code {
+    background: rgba(150,150,202,0.2) !important;
+    color: #1C1C38 !important;
+    font-size: 30px !important;
+    border-radius: 6px !important;
+}
+
+.card-content pre {
+    background: #1C1C38 !important;
+    color: #BAD2E2 !important;
+    border-radius: 20px !important;
+    padding: 36px !important;
+}
+
+.card-content hr {
+    background: rgba(28,28,56,0.15) !important;
+    margin: 36px 0 !important;
+}
+
+.tags-container {
+    border-top: none !important;
+    padding-top: 24px !important;
+}
+
+.tag {
+    background: #1C1C38 !important;
+    border-radius: 100px !important;
+    font-weight: 800 !important;
+    letter-spacing: 0.06em !important;
+}
+
+.page-number {
+    color: rgba(28,28,56,0.38) !important;
+    bottom: 36px !important;
+    right: 88px !important;
+    font-size: 24px !important;
+    font-weight: 700 !important;
+    font-family: 'Nunito', sans-serif !important;
+}

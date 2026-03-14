@@ -1,6 +1,38 @@
 # 参数参考文档
 
-## 渲染脚本（render_xhs.py）
+## Node.js 渲染脚本 V2（render_xhs_v2.js）-- 推荐
+
+```bash
+node scripts/render_xhs_v2.js <markdown_file> [options]
+```
+
+### 参数列表
+
+| 参数 | 简写 | 说明 | 默认值 |
+|---|---|---|---|
+| `--output-dir` | `-o` | 输出目录 | 当前工作目录 |
+| `--style` | `-s` | 样式主题 | `purple` |
+| `--list-styles` | | 列出所有可用样式 | |
+| `--help` | | 显示帮助信息 | |
+
+### 样式主题（`--style`）
+
+| 值 | 名称 | 说明 |
+|---|---|---|
+| `purple` | 紫韵 | 蓝紫色渐变，默认 |
+| `xiaohongshu` | 小红书红 | 小红书品牌红渐变 |
+| `mint` | 清新薄荷 | 绿色薄荷渐变 |
+| `sunset` | 日落橙 | 粉橙日落渐变 |
+| `ocean` | 深海蓝 | 天蓝海洋渐变 |
+| `elegant` | 优雅白 | 极简灰白渐变 |
+| `dark` | 暗黑模式 | 深色编程风格 |
+| `warm-orange` | **暖橘风** | 米白底 + 暖橘强调，自定义封面 |
+| `chalk-pink` | **粉笔风** | 纯白底 + 玫红强调，Long Cang 手写体，自定义封面 |
+| `liz-blue` | **Liz 经典蓝** | 婴儿蓝底 + 薰衣草紫面板，Liz Fosslien 风格，自定义封面 |
+
+---
+
+## Python 渲染脚本（render_xhs.py）
 
 ```bash
 python scripts/render_xhs.py <markdown_file> [options]
@@ -125,11 +157,29 @@ XHS_API_URL=http://localhost:5005
 
 ### YAML 头部元数据
 
+基础字段（所有主题通用）：
+
 ```yaml
 ---
-emoji: "🚀"           # 封面装饰 Emoji
+emoji: "🚀"           # 封面装饰 Emoji（默认主题使用）
 title: "大标题"        # 封面大标题（不超过 15 字）
 subtitle: "副标题文案"  # 封面副标题（不超过 15 字）
+---
+```
+
+扩展字段（自定义封面主题：warm-orange / chalk-pink / liz-blue）：
+
+```yaml
+---
+title: "用AI发现你的下一个职业机会"
+subtitle: "我是怎么做到的——真实工具，真实方法"
+series: "AI × 职场"           # 系列名称（默认：AI × 职场）
+issue: "NO.01"                # 期号（默认：NO.01）
+stat_number: "6"              # 封面核心数字
+stat_unit: "个月"              # 数字单位
+stat_label: "提前"             # 数字上方说明
+author: "Amy"                 # 作者名（默认：Amy）
+author_tag: "AI 应用 · 每周更新" # 作者标签
 ---
 ```
 

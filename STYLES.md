@@ -74,16 +74,54 @@ python scripts/render_xhs_v2.py note.md --style elegant
 python scripts/render_xhs_v2.py note.md --style dark
 ```
 
+### 8. warm-orange（暖橘风）-- 自定义封面
+- **封面背景**：米白色 #FAFAF4
+- **卡片背景**：米白色 #FAFAF4
+- **强调色**：#D4602A（暖橘色）
+- **字体**：Noto Serif SC（标题）+ Noto Sans SC（正文）
+- **特色**：自定义封面模板，含核心数字展示、系列标签、作者署名
+- **适用场景**：知识分享、职场教程、个人品牌
+
+```bash
+node scripts/render_xhs_v2.js note.md --style warm-orange
+```
+
+### 9. chalk-pink（粉笔风）-- 自定义封面
+- **封面背景**：纯白色 #FFFFFF
+- **卡片背景**：纯白色 #FFFFFF
+- **强调色**：#C80059（玫红色）
+- **字体**：Long Cang 手写体（标题）+ Noto Sans SC（正文）
+- **特色**：自定义封面模板，手写风格标题，杂志感排版
+- **适用场景**：时尚、生活方式、个人感悟
+
+```bash
+node scripts/render_xhs_v2.js note.md --style chalk-pink
+```
+
+### 10. liz-blue（Liz 经典蓝）-- 自定义封面
+- **封面背景**：婴儿蓝 #BAD2E2
+- **卡片背景**：婴儿蓝 #BAD2E2
+- **强调色**：#9696CA（薰衣草紫面板）
+- **字体**：Nunito（英文/标签）+ Noto Sans SC（中文）
+- **特色**：自定义封面模板，Liz Fosslien 风格，深色胶囊标签，SVG 简笔画人物
+- **适用场景**：职场观点、数据故事、创意对比
+
+```bash
+node scripts/render_xhs_v2.js note.md --style liz-blue
+```
+
 ## 样式选择建议
 
 | 内容类型 | 推荐样式 |
 |----------|----------|
 | 科技/编程 | dark, purple |
-| 时尚/美妆 | xiaohongshu, sunset |
+| 时尚/美妆 | xiaohongshu, sunset, chalk-pink |
 | 健康/自然 | mint, ocean |
-| 商务/职场 | ocean, elegant |
-| 生活/情感 | sunset, xiaohongshu |
-| 创意/设计 | purple, dark |
+| 商务/职场 | ocean, elegant, warm-orange |
+| 生活/情感 | sunset, xiaohongshu, chalk-pink |
+| 创意/设计 | purple, dark, liz-blue |
+| 知识分享 | warm-orange, liz-blue |
+| 个人品牌 | warm-orange, chalk-pink, liz-blue |
 
 ## 查看所有样式
 

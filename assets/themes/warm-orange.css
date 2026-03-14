@@ -1,0 +1,132 @@
+/* 暖橘风 (Warm Orange) — Amy 自定义主题 */
+@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700&family=Noto+Sans+SC:wght@300;400;500;700;900&display=swap');
+
+.card-container {
+    background: #FAFAF4 !important;
+    padding: 0 !important;
+}
+
+.card-inner {
+    background: #FAFAF4 !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    backdrop-filter: none !important;
+    padding: 88px !important;
+    min-height: 1440px !important;
+    border-top: 4px solid #D4602A;
+    position: relative;
+}
+
+.card-content {
+    color: #5A4A3A !important;
+    font-size: 38px !important;
+    line-height: 1.9 !important;
+    font-weight: 300 !important;
+    font-family: 'Noto Sans SC', sans-serif !important;
+}
+
+.card-content h1 {
+    font-family: 'Noto Serif SC', serif !important;
+    font-size: 64px !important;
+    font-weight: 700 !important;
+    color: #1C1408 !important;
+    line-height: 1.3 !important;
+    margin-bottom: 52px !important;
+}
+
+.card-content h2 {
+    font-family: 'Noto Serif SC', serif !important;
+    font-size: 52px !important;
+    font-weight: 700 !important;
+    color: #1C1408 !important;
+    line-height: 1.35 !important;
+    margin: 48px 0 28px 0 !important;
+}
+
+.card-content h3 {
+    font-size: 44px !important;
+    font-weight: 700 !important;
+    color: #1C1408 !important;
+    margin: 36px 0 18px 0 !important;
+}
+
+.card-content p {
+    margin-bottom: 36px !important;
+}
+
+.card-content strong {
+    font-weight: 700 !important;
+    color: #1C1408 !important;
+}
+
+.card-content em {
+    font-style: italic !important;
+    color: #D4602A !important;
+}
+
+.card-content a {
+    color: #D4602A !important;
+    border-bottom: 2px solid #D4602A !important;
+}
+
+.card-content ul,
+.card-content ol {
+    margin: 28px 0 !important;
+    padding-left: 56px !important;
+}
+
+.card-content li {
+    margin-bottom: 20px !important;
+    line-height: 1.85 !important;
+}
+
+.card-content blockquote {
+    border-left: 6px solid #D4602A !important;
+    padding: 40px 48px !important;
+    background: #F2E8DC !important;
+    margin: 36px 0 !important;
+    color: #2C1C0C !important;
+    font-style: normal !important;
+    border-radius: 0 !important;
+}
+
+.card-content blockquote p {
+    font-family: 'Noto Serif SC', serif !important;
+    font-size: 44px !important;
+    font-weight: 600 !important;
+    line-height: 1.65 !important;
+    margin: 0 !important;
+}
+
+.card-content code {
+    background: #F2E8DC !important;
+    color: #D4602A !important;
+    font-size: 34px !important;
+}
+
+.card-content pre {
+    background: #2C1C0C !important;
+    color: #F2E8DC !important;
+    border-radius: 12px !important;
+    padding: 36px !important;
+}
+
+.card-content hr {
+    background: #EAE0D4 !important;
+    margin: 44px 0 !important;
+}
+
+.tags-container {
+    border-top: 1px solid #E8E0D4 !important;
+}
+
+.tag {
+    background: #D4602A !important;
+}
+
+.page-number {
+    color: #C0B4A8 !important;
+    bottom: 36px !important;
+    right: 88px !important;
+    font-size: 26px !important;
+}
