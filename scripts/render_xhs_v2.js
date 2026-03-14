@@ -34,48 +34,6 @@ const SAFE_HEIGHT = CARD_HEIGHT - 120 - 100 - 80 - 40; // ~1100px
 
 // 样式配置
 const STYLES = {
-    purple: {
-        name: "紫韵",
-        cover_bg: "linear-gradient(180deg, #3450E4 0%, #D266DA 100%)",
-        card_bg: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
-        accent_color: "#6366f1",
-    },
-    xiaohongshu: {
-        name: "小红书红",
-        cover_bg: "linear-gradient(180deg, #FF2442 0%, #FF6B81 100%)",
-        card_bg: "linear-gradient(135deg, #FF2442 0%, #FF6B81 100%)",
-        accent_color: "#FF2442",
-    },
-    mint: {
-        name: "清新薄荷",
-        cover_bg: "linear-gradient(180deg, #43e97b 0%, #38f9d7 100%)",
-        card_bg: "linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)",
-        accent_color: "#43e97b",
-    },
-    sunset: {
-        name: "日落橙",
-        cover_bg: "linear-gradient(180deg, #fa709a 0%, #fee140 100%)",
-        card_bg: "linear-gradient(135deg, #fa709a 0%, #fee140 100%)",
-        accent_color: "#fa709a",
-    },
-    ocean: {
-        name: "深海蓝",
-        cover_bg: "linear-gradient(180deg, #4facfe 0%, #00f2fe 100%)",
-        card_bg: "linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)",
-        accent_color: "#4facfe",
-    },
-    elegant: {
-        name: "优雅白",
-        cover_bg: "linear-gradient(180deg, #f5f5f5 0%, #e0e0e0 100%)",
-        card_bg: "linear-gradient(135deg, #f5f5f5 0%, #e8e8e8 100%)",
-        accent_color: "#333333",
-    },
-    dark: {
-        name: "暗黑模式",
-        cover_bg: "linear-gradient(180deg, #1a1a2e 0%, #16213e 100%)",
-        card_bg: "linear-gradient(135deg, #1a1a2e 0%, #16213e 100%)",
-        accent_color: "#e94560",
-    },
     'warm-orange': {
         name: "暖橘风",
         cover_bg: "#FAFAF4",
@@ -288,6 +246,24 @@ function loadCustomCoverTemplate(styleKey, metadata) {
 
     let html = fs.readFileSync(coverPath, 'utf-8');
 
+    // 处理 hook 字段：生成 HOOK_BLOCK
+    const hookText = metadata.hook || '';
+    let hookBlock = '';
+    if (hookText) {
+        // 简单 Markdown → HTML：**bold** → <strong>bold</strong>，换行 → <br>
+        let hookHtml = hookText
+            .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+            .replace(/\n/g, '<br>');
+        hookBlock = `<div class="hook-section"><div class="hook-text">${hookHtml}</div></div>`;
+    } else if (metadata.stat_number) {
+        // 没有 hook 时回退到大数字展示
+        hookBlock = `<div class="hero-num">
+            <div class="num-label">${metadata.stat_label || ''}</div>
+            <div class="big-num">${metadata.stat_number || ''}</div>
+            <div class="num-unit">${metadata.stat_unit || ''}</div>
+        </div>`;
+    }
+
     // 替换所有占位符
     const replacements = {
         '{{TITLE}}': metadata.title || '标题',
@@ -300,6 +276,7 @@ function loadCustomCoverTemplate(styleKey, metadata) {
         '{{STAT_LABEL}}': metadata.stat_label || '',
         '{{AUTHOR}}': metadata.author || 'Amy',
         '{{AUTHOR_TAG}}': metadata.author_tag || 'AI 应用 · 每周更新',
+        '{{HOOK_BLOCK}}': hookBlock,
     };
 
     for (const [placeholder, value] of Object.entries(replacements)) {
@@ -312,8 +289,8 @@ function loadCustomCoverTemplate(styleKey, metadata) {
 /**
  * 生成封面 HTML
  */
-function generateCoverHtml(metadata, styleKey = 'purple') {
-    const style = STYLES[styleKey] || STYLES.purple;
+function generateCoverHtml(metadata, styleKey = 'chalk-pink') {
+    const style = STYLES[styleKey] || STYLES['chalk-pink'];
 
     // 尝试加载自定义封面模板
     if (style.custom_cover) {
@@ -405,8 +382,8 @@ function loadThemeCss(styleKey) {
 /**
  * 生成正文卡片 HTML
  */
-function generateCardHtml(content, pageNumber = 1, totalPages = 1, styleKey = 'purple') {
-    const style = STYLES[styleKey] || STYLES.purple;
+function generateCardHtml(content, pageNumber = 1, totalPages = 1, styleKey = 'chalk-pink') {
+    const style = STYLES[styleKey] || STYLES['chalk-pink'];
     const htmlContent = convertMarkdownToHtml(content, style);
     const pageText = totalPages > 1 ? `${pageNumber}/${totalPages}` : '';
 
@@ -582,62 +559,45 @@ async function measureContentHeight(page, htmlContent) {
 }
 
 /**
- * 处理和渲染卡片
+ * 处理和渲染卡片 — 贪心段落填充算法
+ * 把所有内容视为连续段落流，一段段往卡片里填，填满再开下一页
  */
 async function processAndRenderCards(cardContents, outputDir, styleKey) {
     const browser = await chromium.launch();
     const page = await browser.newPage({ viewport: { width: CARD_WIDTH, height: CARD_HEIGHT } });
-    
-    const allCards = [];
-    
+
+    const FILL_THRESHOLD = CARD_HEIGHT - 20; // 尽量填满
+
     try {
-        for (const content of cardContents) {
-            const estimatedHeight = estimateContentHeight(content);
-            
-            let splitContents;
-            if (estimatedHeight > SAFE_HEIGHT) {
-                splitContents = smartSplitContent(content, SAFE_HEIGHT);
+        // 把所有内容合并，按段落（空行）拆分
+        const allContent = cardContents.join('\n\n');
+        const blocks = allContent.split(/\n\n+/).filter(b => b.trim());
+
+        const cards = [];
+        let currentBlocks = [];
+
+        for (const block of blocks) {
+            const testContent = [...currentBlocks, block].join('\n\n');
+            const testHtml = generateCardHtml(testContent, 1, 1, styleKey);
+            const testHeight = await measureContentHeight(page, testHtml);
+
+            if (testHeight > FILL_THRESHOLD && currentBlocks.length > 0) {
+                // 当前卡片已满，保存并开新卡
+                cards.push(currentBlocks.join('\n\n'));
+                currentBlocks = [block];
             } else {
-                splitContents = [content];
-            }
-            
-            for (const splitContent of splitContents) {
-                const tempHtml = generateCardHtml(splitContent, 1, 1, styleKey);
-                const actualHeight = await measureContentHeight(page, tempHtml);
-                
-                if (actualHeight > CARD_HEIGHT - 100) {
-                    const lines = splitContent.split('\n');
-                    const subContents = [];
-                    let subLines = [];
-                    
-                    for (const line of lines) {
-                        const testLines = [...subLines, line];
-                        const testHtml = generateCardHtml(testLines.join('\n'), 1, 1, styleKey);
-                        const testHeight = await measureContentHeight(page, testHtml);
-                        
-                        if (testHeight > CARD_HEIGHT - 100 && subLines.length > 0) {
-                            subContents.push(subLines.join('\n'));
-                            subLines = [line];
-                        } else {
-                            subLines = testLines;
-                        }
-                    }
-                    
-                    if (subLines.length > 0) {
-                        subContents.push(subLines.join('\n'));
-                    }
-                    
-                    allCards.push(...subContents);
-                } else {
-                    allCards.push(splitContent);
-                }
+                currentBlocks.push(block);
             }
         }
+
+        if (currentBlocks.length > 0) {
+            cards.push(currentBlocks.join('\n\n'));
+        }
+
+        return cards;
     } finally {
         await browser.close();
     }
-    
-    return allCards;
 }
 
 /**
@@ -659,7 +619,7 @@ async function renderHtmlToImage(page, htmlContent, outputPath) {
 /**
  * 主渲染函数
  */
-async function renderMarkdownToCards(mdFile, outputDir, styleKey = 'purple') {
+async function renderMarkdownToCards(mdFile, outputDir, styleKey = 'chalk-pink') {
     console.log(`\n🎨 开始渲染: ${mdFile}`);
     console.log(`🎨 使用样式: ${STYLES[styleKey].name}`);
     
@@ -678,7 +638,7 @@ async function renderMarkdownToCards(mdFile, outputDir, styleKey = 'purple') {
     const totalCards = processedCards.length;
     console.log(`  📄 将生成 ${totalCards} 张卡片`);
     
-    const style = STYLES[styleKey] || STYLES.purple;
+    const style = STYLES[styleKey] || STYLES['chalk-pink'];
     if (metadata.emoji || metadata.title || style.custom_cover) {
         console.log('  📷 生成封面...');
         const coverHtml = generateCoverHtml(metadata, styleKey);
@@ -738,17 +698,16 @@ function parseArgs() {
 
 选项:
   -o, --output-dir <dir>   输出目录（默认为当前工作目录）
-  -s, --style <style>      样式主题（默认: purple）
+  -s, --style <style>      样式主题（默认: chalk-pink）
   --list-styles           列出所有可用样式
   --help                  显示帮助信息
 
 可用样式:
-  purple, xiaohongshu, mint, sunset, ocean, elegant, dark,
   warm-orange, chalk-pink, liz-blue
 
 示例:
   node render_xhs_v2.js note.md
-  node render_xhs_v2.js note.md -o ./output --style xiaohongshu
+  node render_xhs_v2.js note.md -o ./output --style warm-orange
         `);
         process.exit(0);
     }
@@ -760,7 +719,7 @@ function parseArgs() {
     
     let markdownFile = null;
     let outputDir = process.cwd();
-    let style = 'purple';
+    let style = 'chalk-pink';
     
     for (let i = 0; i < args.length; i++) {
         if (args[i] === '--output-dir' || args[i] === '-o') {

@@ -14,69 +14,77 @@
         .cover {
             width: 1080px; height: 1440px;
             background: #FAFAF4;
-            font-family: 'Noto Sans SC', sans-serif;
             display: flex; flex-direction: column;
             position: relative; overflow: hidden;
         }
-        .cover .top-accent {
-            height: 4px; background: #D4602A; flex-shrink: 0;
-        }
-        .cover .top-meta {
-            padding: 56px 96px 0;
+        .top-accent { height: 4px; background: #D4602A; flex-shrink: 0; }
+        .top-meta {
+            padding: 48px 88px 0;
             display: flex; justify-content: space-between; align-items: center;
         }
-        .cover .series {
-            font-size: 24px; letter-spacing: 0.14em; color: #D4602A; font-weight: 500;
-        }
-        .cover .issue {
-            font-size: 24px; color: #C0B4A8;
-        }
-        .cover .hero-num {
-            padding: 60px 96px 0;
-            flex: 1;
-            display: flex; flex-direction: column; justify-content: center;
-        }
-        .cover .num-label {
-            font-size: 26px; color: #B0A498; letter-spacing: 0.06em; margin-bottom: 28px;
-        }
-        .cover .big-num {
+        .series { font-size: 22px; letter-spacing: 0.14em; color: #D4602A; font-weight: 500; }
+        .issue { font-size: 22px; color: #C0B4A8; }
+
+        .title-section { padding: 48px 88px 0; }
+        .divline { width: 48px; height: 3px; background: #D4602A; margin-bottom: 28px; }
+        h1 {
             font-family: 'Noto Serif SC', serif;
-            font-size: 220px; font-weight: 700; line-height: 0.9;
-            color: #D4602A; letter-spacing: -0.02em;
+            font-size: 76px; font-weight: 700; color: #1C1408; line-height: 1.25;
             margin-bottom: 16px;
         }
-        .cover .num-unit {
+        .sub { font-size: 28px; color: #7A6A5A; line-height: 1.8; font-weight: 300; }
+
+        .hook-section { padding: 40px 88px 0; }
+        .hook-text {
+            font-size: 32px; color: #5A4A3A; line-height: 1.9;
+            font-weight: 400;
+            padding: 36px 40px;
+            background: #F2E8DC;
+            border-left: 5px solid #D4602A;
+            border-radius: 0 12px 12px 0;
+        }
+        .hook-text strong { font-weight: 700; color: #D4602A; }
+
+        .spacer { flex: 1; }
+
+        .stat-badge {
+            padding: 0 88px 32px;
+            display: flex; align-items: baseline; gap: 10px;
+        }
+        .stat-label { font-size: 20px; color: #B0A498; letter-spacing: 0.06em; }
+        .stat-num {
             font-family: 'Noto Serif SC', serif;
-            font-size: 80px; font-weight: 600; color: #E8C0A8; line-height: 1;
+            font-size: 60px; color: #D4602A; font-weight: 700; line-height: 1;
         }
-        .cover .title-block {
-            padding: 0 96px 64px;
-        }
-        .cover .divline {
-            width: 52px; height: 3px; background: #D4602A; margin-bottom: 40px;
-        }
-        .cover h1 {
+        .stat-unit {
             font-family: 'Noto Serif SC', serif;
-            font-size: 80px; font-weight: 700; color: #1C1408; line-height: 1.25;
-            margin-bottom: 32px;
+            font-size: 34px; color: #E8C0A8; font-weight: 600;
         }
-        .cover .sub {
-            font-size: 34px; color: #7A6A5A; line-height: 1.85; font-weight: 300;
-        }
-        .cover .footer {
-            padding: 40px 96px;
+
+        .footer {
+            padding: 32px 88px;
             border-top: 1px solid #E8E0D4;
             display: flex; justify-content: space-between; align-items: center;
         }
-        .cover .auth-name {
-            font-size: 28px; font-weight: 600; color: #1C1408;
-        }
-        .cover .auth-tag {
-            font-size: 22px; color: #9A8A7A; margin-top: 6px;
-        }
-        .cover .footer-dot {
+        .auth-name { font-size: 26px; font-weight: 600; color: #1C1408; }
+        .footer-dot {
             width: 8px; height: 8px; background: #D4602A;
-            border-radius: 50%; margin-right: 12px; display: inline-block; vertical-align: middle;
+            border-radius: 50%; margin-right: 10px; display: inline-block; vertical-align: middle;
+        }
+        .auth-tag { font-size: 20px; color: #9A8A7A; margin-top: 4px; }
+
+        .hero-num {
+            padding: 48px 88px 0; flex: 1;
+            display: flex; flex-direction: column; justify-content: center;
+        }
+        .hero-num .num-label { font-size: 24px; color: #B0A498; letter-spacing: 0.06em; margin-bottom: 16px; }
+        .hero-num .big-num {
+            font-family: 'Noto Serif SC', serif;
+            font-size: 220px; font-weight: 700; line-height: 0.9; color: #D4602A;
+        }
+        .hero-num .num-unit {
+            font-family: 'Noto Serif SC', serif;
+            font-size: 72px; font-weight: 600; color: #E8C0A8; margin-top: 8px;
         }
     </style>
 </head>
@@ -87,15 +95,20 @@
             <span class="series">{{SERIES}}</span>
             <span class="issue">{{ISSUE}}</span>
         </div>
-        <div class="hero-num">
-            <div class="num-label">{{STAT_LABEL}}</div>
-            <div class="big-num">{{STAT_NUMBER}}</div>
-            <div class="num-unit">{{STAT_UNIT}}</div>
-        </div>
-        <div class="title-block">
+        <div class="title-section">
             <div class="divline"></div>
             <h1>{{TITLE}}</h1>
             <p class="sub">{{SUBTITLE}}</p>
+        </div>
+
+        {{HOOK_BLOCK}}
+
+        <div class="spacer"></div>
+
+        <div class="stat-badge">
+            <span class="stat-label">{{STAT_LABEL}}</span>
+            <span class="stat-num">{{STAT_NUMBER}}</span>
+            <span class="stat-unit">{{STAT_UNIT}}</span>
         </div>
         <div class="footer">
             <div>

@@ -14,53 +14,99 @@
         .cover {
             width: 1080px; height: 1440px;
             background: #FFFFFF;
-            font-family: 'Noto Sans SC', sans-serif;
             display: flex; flex-direction: column;
             position: relative; overflow: hidden;
         }
-        .cover .top-accent { height: 4px; background: #C80059; flex-shrink: 0; }
-        .cover .top-meta {
-            padding: 58px 96px 0;
+        .top-accent { height: 4px; background: #C80059; flex-shrink: 0; }
+        .top-meta {
+            padding: 48px 88px 0;
             display: flex; justify-content: space-between; align-items: center;
         }
-        .cover .series {
-            font-size: 21px; letter-spacing: 0.20em; color: #C80059;
+        .series {
+            font-size: 21px; letter-spacing: 0.18em; color: #C80059;
             font-weight: 500; text-transform: uppercase;
         }
-        .cover .issue { font-size: 21px; color: #AEA49A; letter-spacing: 0.08em; }
-        .cover .hero-num {
-            padding: 52px 96px 0;
+        .issue { font-size: 21px; color: #AEA49A; letter-spacing: 0.08em; }
+
+        /* Title — prominent at top */
+        .title-section { padding: 52px 88px 0; }
+        .divline { width: 40px; height: 3px; background: #C80059; margin-bottom: 32px; }
+        h1 {
+            font-family: 'Long Cang', cursive;
+            font-size: 82px; font-weight: 700; color: #1A1612; line-height: 1.25;
+            margin-bottom: 18px;
+        }
+        .sub {
+            font-size: 28px; color: #7A6A62; line-height: 1.8; font-weight: 300;
+        }
+
+        /* Hook — teaser content from the article */
+        .hook-section {
+            padding: 44px 88px 0;
+        }
+        .hook-text {
+            font-size: 33px; color: #3A3430; line-height: 1.9;
+            font-weight: 400;
+            padding: 40px 44px;
+            background: #FEF0F5;
+            border-left: 4px solid #C80059;
+            border-radius: 0 16px 16px 0;
+        }
+        .hook-text strong {
+            font-weight: 700; color: #C80059;
+        }
+
+        /* Spacer pushes bottom elements down */
+        .spacer { flex: 1; }
+
+        /* Stat badge — compact accent */
+        .stat-badge {
+            padding: 0 88px 36px;
+            display: flex; align-items: baseline; gap: 10px;
+        }
+        .stat-label {
+            font-size: 20px; color: #9A8E86; letter-spacing: 0.06em;
+        }
+        .stat-num {
+            font-family: 'Long Cang', cursive;
+            font-size: 64px; color: #C80059; font-weight: 700; line-height: 1;
+        }
+        .stat-unit {
+            font-family: 'Long Cang', cursive;
+            font-size: 36px; color: #DCCFD2; font-weight: 600;
+        }
+
+        /* Footer */
+        .footer {
+            padding: 32px 88px;
+            border-top: 1px solid #E8E2DC;
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        .auth-name { font-size: 26px; font-weight: 600; color: #1A1612; }
+        .auth-tag  { font-size: 20px; color: #9A8A82; margin-top: 4px; }
+        .footer-arrow { font-size: 32px; color: #C80059; }
+
+        /* Fallback: hide hook section if empty */
+        .hook-section:empty { display: none; }
+
+        /* When no hook, show old-style big number */
+        .hero-num {
+            padding: 52px 88px 0;
             flex: 1;
             display: flex; flex-direction: column; justify-content: center;
         }
-        .cover .num-label {
+        .hero-num .num-label {
             font-size: 24px; color: #9A8E86; letter-spacing: 0.08em; margin-bottom: 12px;
         }
-        .cover .big-num {
+        .hero-num .big-num {
             font-family: 'Long Cang', cursive;
             font-size: 224px; font-weight: 700; line-height: 0.88;
             color: #C80059; letter-spacing: -0.02em;
         }
-        .cover .num-unit {
+        .hero-num .num-unit {
             font-family: 'Long Cang', cursive;
             font-size: 72px; font-weight: 600; color: #DCCFD2; line-height: 1.2; margin-top: 10px;
         }
-        .cover .title-block { padding: 0 96px 60px; }
-        .cover .divline { width: 40px; height: 2px; background: #C80059; margin-bottom: 38px; }
-        .cover h1 {
-            font-family: 'Long Cang', cursive;
-            font-size: 78px; font-weight: 700; color: #1A1612; line-height: 1.28;
-            margin-bottom: 26px;
-        }
-        .cover .sub { font-size: 30px; color: #7A6A62; line-height: 1.9; font-weight: 300; }
-        .cover .footer {
-            padding: 38px 96px;
-            border-top: 1px solid #E8E2DC;
-            display: flex; justify-content: space-between; align-items: center;
-        }
-        .cover .auth-name { font-size: 26px; font-weight: 600; color: #1A1612; }
-        .cover .auth-tag  { font-size: 20px; color: #9A8A82; margin-top: 6px; }
-        .cover .footer-arrow { font-size: 32px; color: #C80059; }
     </style>
 </head>
 <body>
@@ -70,16 +116,23 @@
             <span class="series">{{SERIES}}</span>
             <span class="issue">{{ISSUE}}</span>
         </div>
-        <div class="hero-num">
-            <div class="num-label">{{STAT_LABEL}}</div>
-            <div class="big-num">{{STAT_NUMBER}}</div>
-            <div class="num-unit">{{STAT_UNIT}}</div>
-        </div>
-        <div class="title-block">
+
+        <div class="title-section">
             <div class="divline"></div>
             <h1>{{TITLE}}</h1>
             <p class="sub">{{SUBTITLE}}</p>
         </div>
+
+        {{HOOK_BLOCK}}
+
+        <div class="spacer"></div>
+
+        <div class="stat-badge">
+            <span class="stat-label">{{STAT_LABEL}}</span>
+            <span class="stat-num">{{STAT_NUMBER}}</span>
+            <span class="stat-unit">{{STAT_UNIT}}</span>
+        </div>
+
         <div class="footer">
             <div>
                 <div class="auth-name">{{AUTHOR}}</div>
