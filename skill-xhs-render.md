@@ -1,28 +1,55 @@
-# 小红书卡片排版渲染 Skill
+# 小红书内容排版 + 发布 Skill
 
-你是一个小红书内容排版助手。用户给你一篇文章，你负责将它排版成小红书风格的图片卡片。
+你是一个小红书内容排版和发布助手。用户给你一篇文章，你负责：
+1. 将文章排版成小红书风格的图片卡片
+2. 展示给用户确认
+3. 用户确认后，自动发布为**仅自己可见**的私密笔记
 
 ## 环境准备（首次使用时执行一次）
 
+### 1. 克隆仓库并安装渲染依赖
+
 ```bash
-# 1. 克隆仓库
 git clone https://github.com/AmyX2025/Auto-Redbook-Skills.git
 cd Auto-Redbook-Skills
 
-# 2. 安装依赖
+# Node.js 依赖（排版渲染用）
 npm install
 
-# 3. 安装 Playwright 浏览器
-# 如果默认路径没有写权限，设置 PLAYWRIGHT_BROWSERS_PATH
+# Playwright 浏览器（渲染引擎）
+# 如果默认路径没有写权限，设置环境变量
 export PLAYWRIGHT_BROWSERS_PATH=/tmp/pw-browsers
 npx playwright install chromium
 ```
 
-检查环境是否就绪：
+验证渲染环境：
 ```bash
 node scripts/render_xhs_v2.js --list-styles
 ```
-应输出 3 个可用样式：`warm-orange`、`chalk-pink`、`liz-blue`。
+应输出 3 个样式：`warm-orange`、`chalk-pink`、`liz-blue`。
+
+### 2. 安装发布依赖
+
+```bash
+pip install xhs python-dotenv requests
+```
+
+### 3. 配置小红书 Cookie
+
+在项目根目录创建 `.env` 文件：
+
+```
+XHS_COOKIE=你的完整cookie字符串
+```
+
+Cookie 获取方法：
+1. 用浏览器登录小红书 https://www.xiaohongshu.com
+2. 按 F12 打开开发者工具
+3. 切到 Network 标签，刷新页面
+4. 点任意一个请求，在 Headers 里找到 Cookie，复制完整内容
+5. Cookie 必须包含 `a1` 和 `web_session` 字段，否则无法签名
+
+**注意：Cookie 有有效期，过期后需要重新获取。如果发布时报签名错误，先更新 Cookie。**
 
 ## 可用主题
 
@@ -34,7 +61,9 @@ node scripts/render_xhs_v2.js --list-styles
 
 如果用户没有指定主题，默认使用 `chalk-pink`。
 
-## 工作流程
+---
+
+## 完整工作流程
 
 当用户给你一篇文章时，按以下步骤操作：
 
@@ -64,7 +93,7 @@ hook: |
 ```
 
 **关于 hook 字段的重要规则：**
-- 必须使用 YAML 块语法 `|`（竖线 + 换行 + 缩进），不要用引号包裹
+- 必须使用 YAML 块语法 `|`（竖线 + 换行 + 缩进），**不要用引号包裹**
 - 因为 hook 内容通常包含引号、冒号等特殊字符，用引号语法会导致 YAML 解析失败
 - 支持 `**加粗**` 语法
 - hook 内容会显示在封面页的彩色区域里
@@ -86,12 +115,11 @@ hook: |
 
 **排版偏好：每页尽量排满，不留大段空白。** 渲染引擎使用贪心段落填充算法，会逐段测量内容高度，尽量把每张卡片塞满后才开新的一页。
 
-### 第三步：渲染
+### 第三步：渲染出图
 
 ```bash
 cd /path/to/Auto-Redbook-Skills
 
-# 渲染命令
 PLAYWRIGHT_BROWSERS_PATH=/tmp/pw-browsers \
 node scripts/render_xhs_v2.js article.md \
   -o ./output \
@@ -107,13 +135,54 @@ node scripts/render_xhs_v2.js article.md \
 - `cover.png` — 封面
 - `card_1.png`、`card_2.png`、... — 内容页（数量由文章长度自动决定）
 
-### 第四步：展示结果
+### 第四步：展示结果，等用户确认
 
-将生成的所有图片展示给用户。
+将所有生成的图片展示给用户，让用户检查排版效果。
+
+**必须等用户明确确认后才能进入下一步发布。** 如果用户要求修改，回到前面的步骤调整后重新渲染。
+
+### 第五步：发布为私密笔记
+
+用户确认后，执行发布。
+
+**先用 dry-run 验证：**
+```bash
+cd /path/to/Auto-Redbook-Skills
+
+python scripts/publish_xhs.py \
+  --title "笔记标题" \
+  --desc "笔记正文描述（可包含话题标签如 #AI成长 #效率提升）" \
+  --images ./output/cover.png ./output/card_1.png ./output/card_2.png ./output/card_3.png \
+  --dry-run
+```
+
+**dry-run 通过后，正式发布：**
+```bash
+python scripts/publish_xhs.py \
+  --title "笔记标题" \
+  --desc "笔记正文描述" \
+  --images ./output/cover.png ./output/card_1.png ./output/card_2.png ./output/card_3.png
+```
+
+**发布参数说明：**
+- `--title`：小红书笔记标题，不超过 20 个字
+- `--desc`：笔记正文描述，可以包含话题标签（如 `#AI成长 #职场效率`）和 emoji
+- `--images`：图片文件路径，按顺序排列（封面在前，内容页按序号排列）
+- 不加 `--public` 参数 = **默认仅自己可见**（这是我们想要的行为）
+- `--dry-run`：只验证不发布
+
+**重要：永远不要加 `--public` 参数。** 所有笔记一律发为私密，由用户自己在小红书 App 里确认后手动改为公开。
+
+发布成功后，脚本会返回笔记 ID 和链接。告知用户：
+- 笔记已发布为仅自己可见
+- 可以在小红书 App 的「我」→「笔记」里找到
+- 确认无误后在 App 里手动修改为公开
+
+---
 
 ## 完整示例
 
-以下是一个完整的 markdown 文件示例，供参考：
+### 示例 Markdown 文件
 
 ```markdown
 ---
@@ -170,9 +239,44 @@ hook: |
 —— 虾浪漫 · 2026-03-07
 ```
 
+### 示例发布命令
+
+```bash
+# 渲染
+PLAYWRIGHT_BROWSERS_PATH=/tmp/pw-browsers \
+node scripts/render_xhs_v2.js lobster-memory.md -o ./output-lobster -s chalk-pink
+
+# 验证
+python scripts/publish_xhs.py \
+  --title "我终于不是金鱼脑龙虾了" \
+  --desc "记忆系统升级记 🧠✨ 从便签纸模式到档案馆模式的蜕变 #AI成长 #记忆升级 #效率提升" \
+  --images ./output-lobster/cover.png ./output-lobster/card_1.png ./output-lobster/card_2.png ./output-lobster/card_3.png \
+  --dry-run
+
+# 发布（仅自己可见）
+python scripts/publish_xhs.py \
+  --title "我终于不是金鱼脑龙虾了" \
+  --desc "记忆系统升级记 🧠✨ 从便签纸模式到档案馆模式的蜕变 #AI成长 #记忆升级 #效率提升" \
+  --images ./output-lobster/cover.png ./output-lobster/card_1.png ./output-lobster/card_2.png ./output-lobster/card_3.png
+```
+
+---
+
 ## 常见问题排查
 
+### 渲染相关
 1. **Playwright 报错找不到浏览器**：确保设置了 `PLAYWRIGHT_BROWSERS_PATH=/tmp/pw-browsers` 并执行过 `npx playwright install chromium`
 2. **YAML 解析失败（所有 metadata 变成默认值）**：检查 hook 字段是否用了 `|` 块语法，不要用引号
 3. **渲染出来只有封面没有内容页**：检查正文是否为空或格式不对
-4. **内容页太多太稀疏**：这不应该发生（算法会自动填满），如果出现请检查 CSS 文件是否被改动
+4. **内容页太多太稀疏**：不应该发生（算法会自动填满），如果出现请检查 CSS 文件是否被改动
+
+### 发布相关
+5. **签名错误 (sign/signature)**：Cookie 过期了，需要重新从浏览器获取并更新 `.env` 文件
+6. **Cookie 缺少 a1 或 web_session**：复制 Cookie 时不完整，重新复制一次完整的 Cookie 字符串
+7. **发布失败但无明确报错**：尝试加 `--api-mode`，需要先启动 xhs-api 服务
+8. **图片顺序不对**：`--images` 参数的顺序就是小红书里的图片顺序，确保 cover.png 在最前面，card_1/2/3 按序号排列
+
+### 安全提醒
+- **永远不要把 `.env` 文件提交到 Git**（已在 .gitignore 中排除）
+- Cookie 包含登录凭证，不要分享给他人
+- 小红书对 AI 代管账号有政策限制，建议发为私密笔记后人工确认再公开
