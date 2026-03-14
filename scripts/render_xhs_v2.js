@@ -560,14 +560,22 @@ function generateCardHtml(content, pageNumber = 1, totalPages = 1, styleKey = 'p
 
 /**
  * 测量内容高度
+ * 优先测量 .card-content 的实际内容高度（避免 min-height 干扰）
  */
 async function measureContentHeight(page, htmlContent) {
     await page.setContent(htmlContent, { waitUntil: 'networkidle' });
     await page.waitForTimeout(300);
-    
+
     return await page.evaluate(() => {
-        const inner = document.querySelector('.card-inner');
-        if (inner) return inner.scrollHeight;
+        // 优先测量内容区域实际高度，加上 padding
+        const content = document.querySelector('.card-content');
+        if (content) {
+            const inner = document.querySelector('.card-inner');
+            const innerStyle = inner ? getComputedStyle(inner) : null;
+            const paddingTop = innerStyle ? parseFloat(innerStyle.paddingTop) : 60;
+            const paddingBottom = innerStyle ? parseFloat(innerStyle.paddingBottom) : 60;
+            return content.scrollHeight + paddingTop + paddingBottom;
+        }
         const container = document.querySelector('.card-container');
         return container ? container.scrollHeight : document.body.scrollHeight;
     });
